@@ -1,0 +1,10 @@
+streamlit
+langchain-google-vertexai
+google-cloud-aiplatform
+langchain-community
+chromadb
+pypdf
+sentence-transformers
+docx2txt
+pyngrok
+pyarrow==15.0.0
