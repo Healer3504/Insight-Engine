@@ -1,7 +1,3 @@
-# Insight-Engine
-AI-powered RAG search engine for documents unsing Streamlit and Google Gemini
-
-
 # 💡 InsightEngine
 
 An AI-powered RAG search engine for documents using Streamlit and Google Gemini's Vertex AI. This application allows users to upload documents (PDF, DOCX, TXT) and ask questions in natural language to get synthesized, context-aware answers.
