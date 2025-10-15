@@ -1,0 +1,52 @@
+import os
+import subprocess
+import time
+from pyngrok import ngrok
+
+# --- Important Security Note ---
+# This script reads your ngrok authtoken from an environment variable
+# for better security. NEVER paste your secret tokens directly into code
+# that you share on GitHub.
+
+def main():
+    """
+    Main function to launch the Streamlit app and expose it with ngrok.
+    """
+    # 1. Get the ngrok authtoken from the environment variables
+    authtoken = os.getenv("NGROK_AUTHTOKEN")
+    if not authtoken:
+        print("❌ Error: NGROK_AUTHTOKEN is not set.")
+        print("Please set your ngrok authtoken as an environment variable.")
+        return
+
+    print("🔑 Authenticating with ngrok...")
+    ngrok.set_auth_token(authtoken)
+
+    # 2. Start the Streamlit app as a background process
+    print("🚀 Starting Streamlit app in the background...")
+    # Using subprocess.Popen to run Streamlit without blocking our script
+    process = subprocess.Popen(["streamlit", "run", "app.py"])
+
+    # Give the Streamlit app a few seconds to start up
+    time.sleep(5)
+
+    # 3. Connect to the Streamlit app with an ngrok tunnel
+    try:
+        public_url = ngrok.connect(8501)
+        print("\n" + "="*40)
+        print("✅ Your app is live! Click the link below:")
+        print(public_url)
+        print("="*40 + "\n")
+        print("Press Ctrl+C in this terminal to stop the app.")
+        
+        # Keep the script running until you stop it manually
+        while True:
+            time.sleep(1)
+
+    except KeyboardInterrupt:
+        print("\n shutting down app and ngrok tunnel.")
+        ngrok.disconnect(public_url)
+        process.terminate()
+
+if __name__ == "__main__":
+    main()
